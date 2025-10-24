@@ -6,8 +6,12 @@ class DatabaseAccessLayer:
     """Data Access Layer for managing projects in SQLite database."""
     
     def __init__(self, db_path: str = "projects.db"):
-        """Initialize the DAL with database path."""
-        self.db_path = db_path
+        """Initialize the DAL with database path.
+
+        Honors the DB_PATH environment variable if set (e.g., in CI).
+        """
+        # Allow overriding via environment variable, falling back to provided default
+        self.db_path = os.getenv("DB_PATH", db_path)
         self.init_database()
     
     def init_database(self):
